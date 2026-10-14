@@ -1,0 +1,91 @@
+{
+  "_README": "复制为工作目录下的 config.json 后填写。本文件不含任何个人数据，全部字段都是占位/示例。",
+
+  "run": {
+    "session": "<仅备用驱动 bsk 需要：用 `BSK_AUTO_START=0 bsk session start` 拿到的 id>",
+    "_note": "主驱动 chrome-devtools 不需要任何本地配置，浏览器操作由 agent 直接调 MCP 工具。",
+    "sleep_after_navigate": 3.0,
+    "sleep_after_click": 2.5,
+    "sleep_between_jobs": 0.8,
+    "max_pages": 15,
+    "stop_on": ["验证码", "登录失效", "请登录", "身份过期"]
+  },
+
+  "keywords": {
+    "_notes": "搜索词与方向标签。同一搜索词可归到不同方向，用于后续选简历。",
+    "groups": [
+      {
+        "label": "方向A",
+        "search": ["运营", "新媒体", "文案", "策划", "宣传", "编辑"],
+        "positive_title": ["运营", "新媒体", "文案", "策划", "市场", "宣传", "用户", "编辑"]
+      },
+      {
+        "label": "方向B",
+        "search": ["行政", "人力", "文秘", "文员", "综合", "人事"],
+        "positive_title": ["行政", "人力", "文秘", "文员", "综合", "人事", "办公室", "后勤", "档案"]
+      }
+    ],
+    "exact_blacklist_title": ["市场营销"],
+    "_exact_note": "岗位名精确黑名单：只删这一个词，不要删掉整个「市场」类关键词，否则会误杀其他市场岗。"
+  },
+
+  "filters": {
+    "_notes": "列表级粗筛。真正的放行在投递前的 JD 门禁。",
+    "require_campus": true,
+    "education_allow": ["本科", "本科及以上", "不限"],
+    "education_ban": ["大专", "中专", "高中", "初中", "中技"],
+    "exclude_title_manage": ["部长", "总监", "总经理", "副总", "董事", "总裁", "首席", "院长", "书记"],
+    "industry_ban_words": ["作业区", "工艺", "工程师", "技师", "操作", "维修", "冶炼", "电工", "焊工", "化验", "采矿", "地质", "勘探"],
+    "_industry_note": "行业误伤黑名单：例如「综合」会把「资源综合利用」类工业岗捞进来，必须靠这类词挡掉。",
+    "company_blacklist": ["<集团全称1>", "<集团全称2>"],
+    "_blacklist_note": "必须用工商全称或字号匹配，写简称命中为 0。有「同一单位最多投 N 个职位」限制的集团达上限后整组跳过。"
+  },
+
+  "gate": {
+    "_notes": "投递前 JD 正文门禁。判定文本只取 JD 正文，不要用页面头部/导航栏。",
+    "must_hit_any": ["<届，如 2027届>", "应届生", "应届", "校招", "校园招聘"],
+    "neg_regex": ["[1-9]\\s*年以上[\\s\\S]{0,8}经验", "要求[\\s\\S]{0,4}[1-9]\\s*年[\\s\\S]{0,4}经验", "[1-9]-[1-9]年经验"],
+    "jd_start_markers": ["职位描述", "岗位职责", "职位职责", "任职要求"],
+    "jd_end_markers": ["工作地点", "公司信息", "工商信息", "相似职位"]
+  },
+
+  "resumes": {
+    "_notes": "多份简历的选择规则。禁止跨方向混投：命中哪组信号就用哪份。",
+    "default": "<简历A名称>",
+    "options": [
+      {
+        "name": "<简历A名称>",
+        "jd_signal": ["公众号", "推文", "文案", "新媒体", "内容运营", "宣传稿", "短视频", "品牌推广"],
+        "title_signal": ["宣传", "文案", "新媒体", "品牌", "运营", "编辑", "策划"]
+      },
+      {
+        "name": "<简历B名称>",
+        "jd_signal": ["考勤", "办公用品", "固定资产", "档案管理", "会务", "后勤保障", "社保", "公积金", "入离职"],
+        "title_signal": ["行政", "人事", "文员", "文秘", "综合"]
+      }
+    ],
+    "decide_rule": "统计 JD 信号词命中数，命中数最高且 >= 阈值者胜出；平局取 default。投行政方向岗禁止用内容方向简历。"
+  },
+
+  "platform": {
+    "iguopin": {
+      "search_url": "https://www.iguopin.com/job/list?keyword={kw}",
+      "detail_url": "https://www.iguopin.com/job/detail?id={job_id}",
+      "card_selector": ".job-card",
+      "pk_field": "job_id",
+      "applied_ok_value": 2,
+      "confirm_button_texts": ["确认申请", "确认", "确定", "提交"],
+      "fav_on": ["fail", "unknown"]
+    },
+    "zhilian": {
+      "search_url": "https://www.zhaopin.com/jobs?kw={kw}&el=4&et=5&p={page}",
+      "_url_note": "el=4 本科，et=5 校招；p=N 分页。详情直链从卡片 Vue 实例的 positionURL 取。",
+      "card_selector": "div.job-card:not(.job-card--active)",
+      "pk_field": "jobId",
+      "deliver_button_texts": ["立即投递"],
+      "confirm_button_texts": ["投递简历", "投递", "确认"],
+      "records_url": "https://i.zhaopin.com/schedule?status=delivered",
+      "fav_on": []
+    }
+  }
+}

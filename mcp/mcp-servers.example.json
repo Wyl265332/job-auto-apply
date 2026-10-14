@@ -1,0 +1,20 @@
+{
+  "_README": "MCP 配置片段。把 mcpServers 下的条目合并进你自己的 MCP 配置文件（不要整体覆盖，会丢掉你已有的 server）。Windows 上 npx 常常不在 PATH，需要写全路径。",
+  "_config_locations": {
+    "WorkBuddy": "~/.workbuddy/mcp.json",
+    "Claude Desktop": "~/Library/Application Support/Claude/claude_desktop_config.json (macOS) / %APPDATA%/Claude/claude_desktop_config.json (Windows)",
+    "Cursor": "~/.cursor/mcp.json"
+  },
+  "mcpServers": {
+    "chrome-devtools": {
+      "_note": "主驱动。Windows 若 npx 不在 PATH，把 command 换成 npx.cmd 的绝对路径。",
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@latest", "--no-usage-statistics"]
+    },
+    "chrome-devtools-windows": {
+      "_note": "Windows 备选写法：写全 npx.cmd 路径。用上面那个能用就别用这个。",
+      "command": "C:\\Users\\<你的用户名>\\.workbuddy\\binaries\\node\\versions\\22.22.2-6\\npx.cmd",
+      "args": ["-y", "chrome-devtools-mcp@latest", "--no-usage-statistics"]
+    }
+  }
+}

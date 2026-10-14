@@ -1,0 +1,27 @@
+# 个人配置与简历画像 —— 绝对不要提交
+config.json
+resume_profile.json
+
+# 投递产出（JD、日志、报告）
+投递记录/
+jd/
+logs/
+raw/
+投递汇总报告.md
+投递汇总-*.md
+已查看岗位JD关键词总结.md
+
+# 驱动二进制（体积大且是第三方产物）
+mcp/bsk/bsk.exe
+mcp/bsk/bsk
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
